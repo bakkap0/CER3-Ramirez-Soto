@@ -1,12 +1,5 @@
 from django.contrib import admin
-<<<<<<< HEAD
-from .models import Libro
-
-@admin.register(Libro)
-class LibroAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'autor', 'categoria', 'fecha_publicacion')
-=======
-from .models import Libro, Favorito
+from .models import Libro, Favorito 
 
 @admin.register(Libro)
 class LibroAdmin(admin.ModelAdmin):
@@ -19,4 +12,4 @@ class FavoritoAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'libro', 'fecha_agregado')
     search_fields = ('usuario__username', 'libro__titulo')
     list_filter = ('fecha_agregado',)
->>>>>>> frank/main
+

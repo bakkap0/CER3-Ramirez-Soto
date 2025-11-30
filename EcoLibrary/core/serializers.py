@@ -4,9 +4,6 @@ from .models import Libro
 class LibroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Libro
-<<<<<<< HEAD
-        fields = '__all__'
-=======
         fields = ['id', 'titulo', 'autor', 'descripcion', 'categoria', 'anio_publicacion', 'imagen_url']
 
 class LibroDetalleSerializer(LibroSerializer):
@@ -22,4 +19,4 @@ class LibroDetalleSerializer(LibroSerializer):
             return obtener_datos_api_externa(obj.titulo)
         except Exception:
             return "Información complementaria no disponible"
->>>>>>> frank/main
+
