@@ -35,7 +35,7 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <span class="nav-link text-white">Hola, **{{ user.username }}**</span>
+                        <span class="nav-link text-white">Hola, {{ user.username }}</span>
                     </li>
                     <li class="nav-item">
                         <form method="post" action="{% url 'logout' %}" class="d-inline">
@@ -50,7 +50,7 @@
                         <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-light text-success ms-2" href="{% url 'registro' %}">Registrarse</a>
+                        <a class="btn btn-light text-success ms-2" href="{% url 'registro' %}">Registrarse</a>
                     </li>
                     {% endif %}
                 </ul>

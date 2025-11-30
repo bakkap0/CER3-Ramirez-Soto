@@ -11,12 +11,12 @@
 </nav>
 
 <div class="row">
-    <div class="col-md-4">
+<div class="col-md-4">
         {% if datos_externos.portada_url_ol %}
         <img src="{{ datos_externos.portada_url_ol }}" class="img-fluid rounded shadow-sm"
             alt="Portada de {{ libro.titulo }}">
-        {% elif libro.imagen_url %}
-        <img src="{{ libro.imagen_url }}" class="img-fluid rounded shadow-sm" alt="Portada de {{ libro.titulo }}">
+        {% elif libro.imagen %} 
+        <img src="{{ libro.imagen.url }}" class="img-fluid rounded shadow-sm" alt="Portada de {{ libro.titulo }}">
         {% else %}
         <div class="bg-light p-5 text-center rounded border">Portada no disponible</div>
         {% endif %}
@@ -30,19 +30,22 @@
 
         <h2>Información de EcoLibrary</h2>
         <ul class="list-group list-group-flush mb-4">
-            <li class="list-group-item">**Categoría:** {{ libro.categoria }}</li>
-            <li class="list-group-item">**Año de Publicación:** {{ libro.anio_publicacion }}</li>
-            <li class="list-group-item">**Descripción Breve:** {{ libro.descripcion }}</li>
+            <li class="list-group-item">Categoría: {{ libro.categoria }}</li>
+            <li class="list-group-item">Año de Publicación: {{ libro.anio_publicacion }}</li>
+            <li class="list-group-item">Descripción Breve: {{ libro.descripcion }}</li>
         </ul>
 
-        <h2>Datos Complementarios (API Externa)</h2>
+<h2>Datos Complementarios (API Externa)</h2>
         {% if datos_externos.error %}
         <div class="alert alert-danger">{{ datos_externos.error }}</div>
         {% else %}
         <ul class="list-group list-group-flush mb-4">
-            <li class="list-group-item">**Año de Primera Publicación (OL):** {{
-                datos_externos.anio_primera_publicacion|default:"No disponible" }}</li>
-            <li class="list-group-item">**Puntuación:** {{ datos_externos.nota|default:"No disponible" }}</li>
+            <li class="list-group-item">
+                <strong>Año de Primera Publicación:</strong> {{ datos_externos.anio_primera_publicacion|default:"No disponible" }}
+            </li>
+            <li class="list-group-item">
+                <strong>Puntuación:</strong> {{ datos_externos.nota|default:"No disponible" }}
+            </li>
         </ul>
         {% endif %}
 
@@ -63,13 +66,5 @@
         </div>
         {% endif %}
     </div>
-</div>
-{% endblock %}
-{% else %}
-<div class="alert alert-info mt-3">
-    <a href="{% url 'login' %}">Inicia sesión</a> para marcar este libro como favorito.
-</div>
-{% endif %}
-</div>
 </div>
 {% endblock %}
