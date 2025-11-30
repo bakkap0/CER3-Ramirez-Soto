@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">📚 Catálogo de Libros</h2>
+
+<div class="row">
+    {% for libro in libros %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ libro.titulo }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ libro.autor }}</h6>
+                <p class="card-text">{{ libro.descripcion|truncatewords:20 }}</p>
+                <a href="{% url 'detalle_libro' libro.id %}" class="btn btn-outline-success btn-sm">Ver Detalle</a>
+            </div>
+            <div class="card-footer text-muted">
+                {{ libro.categoria }}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+        No hay libros registrados aún. ¡Dile al administrador que agregue algunos!
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="row g-0">
+        <div class="col-md-4 text-center p-3">
+            {% if datos_externos.portada_url %}
+                <img src="{{ datos_externos.portada_url }}" class="img-fluid rounded-start" alt="Portada de {{ libro.titulo }}">
+                <p class="small text-muted mt-2">Portada desde OpenLibrary API</p>
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                    <span class="text-muted">Sin portada disponible</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h2 class="card-title">{{ libro.titulo }}</h2>
+                <h4 class="text-muted">{{ libro.autor }}</h4>
+                <hr>
+                <p class="card-text"><strong>Descripción:</strong> {{ libro.descripcion }}</p>
+                
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item"><strong>Categoría:</strong> {{ libro.categoria }}</li>
+                    <li class="list-group-item"><strong>Año:</strong> {{ libro.anio_publicacion }}</li>
+                    
+                    {% if datos_externos %}
+                        <li class="list-group-item bg-light">
+                            <strong>⭐ Puntuación OpenLibrary:</strong> {{ datos_externos.puntuacion }}
+                        </li>
+                        <li class="list-group-item bg-light">
+                            <strong>📅 Primera Edición (Mundial):</strong> {{ datos_externos.primera_edicion }}
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <a href="{% url 'lista_libros' %}" class="btn btn-secondary">Volver al Catálogo</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
