@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'core/base.html' %}
 
 {% block content %}
@@ -40,3 +41,75 @@
     </div>
 </div>
 {% endblock %}
+=======
+{% extends "core/base.html" %}
+
+{% block title %}Detalle: {{ libro.titulo }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'lista_libros' %}">Catálogo</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ libro.titulo }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+<div class="col-md-4">
+        {% if datos_externos.portada_url_ol %}
+        <img src="{{ datos_externos.portada_url_ol }}" class="img-fluid rounded shadow-sm"
+            alt="Portada de {{ libro.titulo }}">
+        {% elif libro.imagen %} 
+        <img src="{{ libro.imagen.url }}" class="img-fluid rounded shadow-sm" alt="Portada de {{ libro.titulo }}">
+        {% else %}
+        <div class="bg-light p-5 text-center rounded border">Portada no disponible</div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-8">
+        <h1 class="display-4">{{ libro.titulo }}</h1>
+        <p class="lead text-muted">Autor: {{ libro.autor }}</p>
+
+        <hr>
+
+        <h2>Información de EcoLibrary</h2>
+        <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item">Categoría: {{ libro.categoria }}</li>
+            <li class="list-group-item">Año de Publicación: {{ libro.anio_publicacion }}</li>
+            <li class="list-group-item">Descripción Breve: {{ libro.descripcion }}</li>
+        </ul>
+
+<h2>Datos Complementarios (API Externa)</h2>
+        {% if datos_externos.error %}
+        <div class="alert alert-danger">{{ datos_externos.error }}</div>
+        {% else %}
+        <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item">
+                <strong>Año de Primera Publicación:</strong> {{ datos_externos.anio_primera_publicacion|default:"No disponible" }}
+            </li>
+            <li class="list-group-item">
+                <strong>Puntuación:</strong> {{ datos_externos.nota|default:"No disponible" }}
+            </li>
+        </ul>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'marcar_favorito' libro.pk %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn {% if is_favorito %}btn-danger{% else %}btn-warning{% endif %} btn-lg">
+                {% if is_favorito %}
+                Eliminar de Favoritos
+                {% else %}
+                Marcar como Favorito
+                {% endif %}
+            </button>
+        </form>
+        {% else %}
+        <div class="alert alert-info mt-3">
+            <a href="{% url 'login' %}">Inicia sesión</a> para marcar este libro como favorito.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+>>>>>>> frank/main

@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+
+{% block title %}Confirmar Eliminación{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Eliminar de Favoritos</h1>
+
+<div class="alert alert-warning">
+    ¿Estás seguro que deseas eliminar el libro "{{ object.libro.titulo }}" de tus favoritos?
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+    <a href="{% url 'lista_favoritos' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

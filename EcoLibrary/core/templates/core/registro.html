@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Registro en EcoLibrary</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success w-100">Crear Cuenta</button>
+            </form>
+            <p class="mt-3 text-center">
+                ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia Sesión aquí</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
