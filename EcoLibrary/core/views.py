@@ -13,14 +13,11 @@ from .serializers import LibroSerializer, LibroDetalleSerializer
 
 def obtener_datos_api_externa(titulo_o_id):
     import requests 
-
     API_URL = f"https://openlibrary.org/search.json?title={titulo_o_id}"
-    
     try:
         response = requests.get(API_URL, timeout=5)
         response.raise_for_status() 
         data = response.json()
-        
         if data and data.get('docs'):
             first_doc = data['docs'][0]
             return {
@@ -28,14 +25,12 @@ def obtener_datos_api_externa(titulo_o_id):
                 "anio_primera_publicacion": first_doc.get('first_publish_year'),
                 "nota": "Simulación de puntuación: 4.5/5"
             }
-        
     except requests.exceptions.RequestException as e:
         return {"error": f"Error al consultar API externa: {e}"}
-        
     return {"mensaje": "No se encontraron datos complementarios en la API externa."}
 
-def registro_view(request):
 
+def registro_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST) 
         if form.is_valid():
@@ -45,6 +40,7 @@ def registro_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'core/registro.html', {'form': form})
+
 
 class LibroListView(ListView):
     model = Libro
@@ -62,23 +58,19 @@ class LibroDetailView(DetailView):
         context['datos_externos'] = obtener_datos_api_externa(libro.titulo) 
         user = self.request.user
         if user.is_authenticated:
-            context['is_favorito'] = Favorito.objects.filter(
-                usuario=user, 
-                libro=libro
-            ).exists()
+            context['is_favorito'] = Favorito.objects.filter(usuario=user, libro=libro).exists()
         return context
+
 
 @login_required
 def marcar_favorito_view(request, libro_id):
     libro = get_object_or_404(Libro, pk=libro_id)
     favorito_qs = Favorito.objects.filter(usuario=request.user, libro=libro)
-    
     if request.method == 'POST':
         if favorito_qs.exists():
             favorito_qs.delete()
         else:
             Favorito.objects.create(usuario=request.user, libro=libro) 
-            
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse_lazy('detalle_libro', kwargs={'pk': libro_id})))
 
 @method_decorator(login_required, name='dispatch') 
@@ -86,7 +78,6 @@ class FavoritoListView(ListView):
     model = Favorito
     template_name = 'core/lista_favoritos.html' 
     context_object_name = 'favoritos'
-
     def get_queryset(self):
         return Favorito.objects.filter(usuario=self.request.user).select_related('libro') 
 
@@ -95,9 +86,9 @@ class FavoritoDeleteView(DeleteView):
     model = Favorito
     success_url = reverse_lazy('lista_favoritos') 
     template_name = 'core/confirmar_eliminacion_favorito.html' 
-
     def get_queryset(self):
         return Favorito.objects.filter(usuario=self.request.user)
+
 
 class LibroViewSet(viewsets.ModelViewSet):
     queryset = Libro.objects.all()
@@ -106,7 +97,6 @@ class LibroViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return LibroDetalleSerializer
         return LibroSerializer
-
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
